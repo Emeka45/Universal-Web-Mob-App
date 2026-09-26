@@ -44,9 +44,9 @@ class MainActivity : Activity() {
         top.addView(brand, LinearLayout.LayoutParams(dp(42), dp(42)))
         url = EditText(this).apply {
             hint = "Search or enter website"
-            hintTextColor = Color.rgb(150,155,170)
+            setHintTextColor(Color.rgb(150,155,170))
             setTextColor(Color.WHITE)
-            singleLine = true; textSize = 15f
+            setSingleLine(true); textSize = 15f
             imeOptions = EditorInfo.IME_ACTION_GO
             setPadding(dp(14), 0, dp(10), 0)
             background = round(Color.rgb(22,27,40), dp(14))

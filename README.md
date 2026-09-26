@@ -27,3 +27,6 @@ Open in Android Studio and run:
     ./gradlew assembleDebug
 
 Package: `com.coeric.universalwebmob`
+
+
+Build status is verified by the repository's GitHub Actions workflow on pushes to `main`.

@@ -61,3 +61,7 @@ Open in Android Studio and run:
 Package: `com.coeric.universalwebmob`
 
 GitHub Actions verifies builds on pushes to `main`.
+
+
+## Size optimization
+The build uses ABI-split APKs for `arm64-v8a` and `armeabi-v7a`, plus R8/resource shrinking for release builds and an optimized Android App Bundle for store delivery.

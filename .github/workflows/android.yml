@@ -24,15 +24,17 @@ jobs:
       - name: Build optimized debug APKs
         run: gradle assembleDebug -PsplitApks=true --no-daemon
 
-      - name: Build optimized release APKs and App Bundle
-        run: gradle assembleRelease -PsplitApks=true --no-daemon
-gradle bundleRelease --no-daemon
-
       - name: Upload optimized debug APKs
         uses: actions/upload-artifact@v4
         with:
           name: universal-web-mob-debug-split
           path: app/build/outputs/apk/debug/*-*.apk
+
+      - name: Build optimized release APKs
+        run: gradle assembleRelease -PsplitApks=true --no-daemon
+
+      - name: Build Android App Bundle
+        run: gradle bundleRelease --no-daemon
 
       - name: Upload optimized release APKs
         uses: actions/upload-artifact@v4

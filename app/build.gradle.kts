@@ -18,7 +18,7 @@ android {
     // does not have to download native libraries for architectures it cannot use.
     splits {
         abi {
-            isEnable = true
+            isEnable = project.findProperty("splitApks") == "true"
             reset()
             include("arm64-v8a", "armeabi-v7a")
             isUniversalApk = false

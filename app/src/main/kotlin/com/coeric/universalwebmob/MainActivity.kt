@@ -1,6 +1,7 @@
 package com.coeric.universalwebmob
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -106,12 +107,12 @@ class MainActivity : Activity() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        listOf(
-            "‹" to { session?.goBack() },
-            "›" to { session?.goForward() },
-            "＋" to { newTab() },
-            "▣" to { showWorkspace() },
-            "☰" to { showMenu() }
+        listOf<Pair<String, () -> Unit>>(
+            "‹" to { session?.goBack(); Unit },
+            "›" to { session?.goForward(); Unit },
+            "＋" to { newTab(); Unit },
+            "▣" to { showWorkspace(); Unit },
+            "☰" to { showMenu(); Unit }
         ).forEach { item ->
             controls.addView(
                 iconButton(item.first, item.second),
@@ -177,7 +178,8 @@ class MainActivity : Activity() {
         session = createSession()
         val current = session ?: return
         attachDelegates(current)
-        current.open(runtime)
+        val readyRuntime = runtime ?: return
+        current.open(readyRuntime)
         geckoView.setSession(current)
     }
 
@@ -209,7 +211,7 @@ class MainActivity : Activity() {
                 error: org.mozilla.geckoview.WebRequestError
             ): GeckoResult<String> {
                 status.text = "PAGE ERROR • SUPPORTED BROWSER FALLBACK AVAILABLE"
-                return super.onLoadError(session, uri, error)
+                return GeckoResult.fromValue("about:blank")
             }
 
             override fun onNewSession(
@@ -217,7 +219,8 @@ class MainActivity : Activity() {
                 uri: String
             ): GeckoResult<GeckoSession> {
                 newTab(uri)
-                return GeckoResult.fromValue(this@MainActivity.session)
+                val created = this@MainActivity.session ?: return GeckoResult.fromValue(session)
+                return GeckoResult.fromValue(created)
             }
         })
 

@@ -10,14 +10,47 @@ android {
         applicationId = "com.coeric.universalwebmob"
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
-        versionName = "2.0.0"
+        versionCode = 3
+        versionName = "2.1.0"
+    }
+
+    // GeckoView ships large native binaries. Split them by ABI so a phone
+    // does not have to download native libraries for architectures it cannot use.
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a")
+            isUniversalApk = false
+        }
     }
 
     buildTypes {
-        release {
+        debug {
+            // Keep debug installable for direct testing while still using ABI splits.
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        release {
+            // R8 + resource shrinking removes unused app/library code and resources.
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    bundle {
+        abi {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        language {
+            enableSplit = true
         }
     }
 
@@ -26,8 +59,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-
     packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
         resources {
             excludes += setOf(
                 "META-INF/DEPENDENCIES",

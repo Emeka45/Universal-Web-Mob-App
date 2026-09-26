@@ -61,3 +61,6 @@ Open in Android Studio and run:
 Package: `com.coeric.universalwebmob`
 
 GitHub Actions verifies builds on pushes to `main`.
+
+
+Build verification marker: ABI-split debug/release APKs and an optimized release AAB are built in separate Gradle invocations.
